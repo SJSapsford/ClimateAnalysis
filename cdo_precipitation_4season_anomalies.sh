@@ -5,23 +5,19 @@
 ##### Inputs ###########################
 input_file="/Programs/Climate/NoongarProcessedMarch24/Anomalies/masked_precipitation_noongar.nc" 
 
-#Noongar seasons
-#Birak season:December-January (12/01)
-#season="birak"
-#Bunuru: February-March (02/03)
-season="bunuru"
-#Djeran: April-May (04/05)
-#season="djeran"
-#Makuru: June-July (06/07)
-#season="makuru"
-#Djilba: August-September (08/09)
-#season="djilba"
-#Kambarang: October-November (10/11) 
-#season="kambarang"
+#Four seasons
+#Summer season:December-January-February (12/01/02)
+season="summer"
+#Autumn: March-April-May (03/04/05)
+#season="autumn"
+#Winter: June-July-August (06/07/08)
+#season="winter"
+#spring: September-October-November (09/10/11) 
+#season="spring"
 
 # Define the season of interest (e.g., June to August for winter in the Southern Hemisphere)
-month_start="02"  # Replace with your specific months
-month_end="03"
+month_start="12"  # Replace with your specific months
+month_end="02"
 
 # Define the climatology period (e.g., 1981-2010)
 year_in="1961"
@@ -38,8 +34,8 @@ anomaly_mean_output=${output_dir}${season}_precip_mean_anomaly.nc
 #when calculating over Dec/Jan you need to use seassum or seasmean
 #however, every other time period yearsum or yearmean is used
 
-#cdo -seassum -select,season=AS $input_file $seasonal_output
-cdo -yearsum -select,season=FM $input_file $seasonal_output
+cdo -seassum -select,season=DJF $input_file $seasonal_output
+#cdo -yearsum -select,season=FM $input_file $seasonal_output
 
 # Calculate the 30-year climatology for the season of interest
 cdo -timmean -selyear,${year_in}/${year_out} $seasonal_output $climatology_output
@@ -49,6 +45,7 @@ cdo sub $seasonal_output $climatology_output $anomaly_output
 
 #calculate field mean
 cdo fldmean $anomaly_output $anomaly_mean_output
+
 #old code from before
 #month_start="12"
 #month_end="01"
